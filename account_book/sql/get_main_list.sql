@@ -17,7 +17,7 @@ from	(
 				,	c.category_nm
 				,	a.price
 				,	a.remark
-				,	a.impluse_yn
+				,	a.impulse_yn
 				,	a.category_id
 				,	a.category_seq
 			from	account			a
