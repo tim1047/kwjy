@@ -47,3 +47,24 @@ class DivisionList(APIView):
 
     def post(self, request):
         return Response({'result_message': 'SUCCESS'})
+
+class CategoryListByDivisionId(APIView):
+    def get(self, request, division_id):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            param = {
+                'division_id': division_id
+            }
+            result_data = insert_account_service.get_category_list_by_division_id(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})
