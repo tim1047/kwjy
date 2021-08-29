@@ -7,7 +7,7 @@ select	z.account_id
 	,	cd.category_seq_nm
 	,	z.price
 	,	z.remark
-	,	z.impluse_yn
+	,	z.impulse_yn
 from	(
 			select	a.account_id
 				,	a.account_dt
