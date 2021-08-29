@@ -56,7 +56,7 @@ class CategoryListByDivisionId(APIView):
 
         try:
             param = {
-                'division_id': int(division_id)
+                'division_id': str(division_id)
             }
             result_data = insert_account_service.get_category_list_by_division_id(param)
         except Exception as e:
