@@ -48,6 +48,45 @@ class DivisionList(APIView):
     def post(self, request):
         return Response({'result_message': 'SUCCESS'})
 
+class MemberList(APIView):
+    def get(self, request):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            result_data = insert_account_service.get_member_list()
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})
+
+class PaymentList(APIView):
+    def get(self, request, member_id):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            param = {
+                'member_id': member_id
+            }
+            result_data = insert_account_service.get_payment_list(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})
+
 class CategoryListByDivisionId(APIView):
     def get(self, request, division_id):
         result_message = 'SUCCESS'
@@ -56,7 +95,7 @@ class CategoryListByDivisionId(APIView):
 
         try:
             param = {
-                'division_id': str(division_id)
+                'division_id': division_id
             }
             result_data = insert_account_service.get_category_list_by_division_id(param)
         except Exception as e:
@@ -68,3 +107,43 @@ class CategoryListByDivisionId(APIView):
 
     def post(self, request):
         return Response({'result_message': 'SUCCESS'})
+
+class CategorySeqList(APIView):
+    def get(self, request, category_id):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            param = {
+                'category_id': category_id
+            }
+            result_data = insert_account_service.get_category_seq_list(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})
+
+class Account(APIView):
+    def get(self, request):
+        return Response({'result_message': 'SUCCESS'})
+
+    def post(self, request):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            insert_account_service.insert_account(request.data)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+        

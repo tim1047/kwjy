@@ -17,6 +17,35 @@ def get_division_list():
         ]
     return result
 
+def get_member_list():
+    sql_file = 'account_book/sql/get_member_list.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+
+        cursor.execute(sql)
+
+        columns = [col[0] for col in cursor.description]
+        result = [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+    return result
+
+def get_payment_list(param):
+    sql_file = 'account_book/sql/get_payment_list.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+
+        cursor.execute(sql, param)
+
+        columns = [col[0] for col in cursor.description]
+        result = [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+    return result
 
 def get_category_list_by_division_id(param):
     sql_file = 'account_book/sql/get_category_list_by_division_id.sql'
@@ -32,3 +61,26 @@ def get_category_list_by_division_id(param):
             for row in cursor.fetchall()
         ]
     return result
+
+def get_category_seq_list(param):
+    sql_file = 'account_book/sql/get_category_seq_list.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+
+        cursor.execute(sql, param)
+
+        columns = [col[0] for col in cursor.description]
+        result = [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+    return result
+
+def insert_account(param):
+    sql_file = 'account_book/sql/insert_account.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+        cursor.execute(sql, param)
+        
