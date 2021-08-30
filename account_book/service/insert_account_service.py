@@ -19,4 +19,10 @@ def get_category_seq_list(param):
 def insert_account(param):
     insert_account_dao.insert_account(param)
 
+def update_account(param):
+    insert_account_dao.update_account(param)
+    
+def delete_account(param):
+    insert_account_dao.delete_account(param)
+
 

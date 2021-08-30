@@ -83,4 +83,18 @@ def insert_account(param):
     with connection.cursor() as cursor:
         sql = load_sql_file(sql_file)
         cursor.execute(sql, param)
-        
+
+def update_account(param):
+    sql_file = 'account_book/sql/update_account.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+        cursor.execute(sql, param)
+
+def delete_account(param):
+    sql_file = 'account_book/sql/delete_account.sql'
+
+    with connection.cursor() as cursor:
+        sql = load_sql_file(sql_file)
+        cursor.execute(sql, param)
+

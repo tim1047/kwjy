@@ -138,4 +138,32 @@ class Account(APIView):
             exc_info = sys.exc_info()
             error_message = ''.join(traceback.format_exception(*exc_info))
         return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+    
+    def put(self, request):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            insert_account_service.update_account(request.data)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def delete(self, request):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            insert_account_service.delete_account(request.data)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
         
