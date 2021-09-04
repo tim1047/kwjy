@@ -1,7 +1,7 @@
-select	(ROW_NUMBER() OVER()) AS account_id
+select	(ROW_NUMBER() OVER()) AS seq
 	,	zz.*
 from	(
-			select	z.account_id as seq
+			select	z.account_id
 				,	z.account_dt
 				,	z.division_nm
 				,	z.member_nm
