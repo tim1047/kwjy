@@ -24,33 +24,35 @@ select	y.category_id
 	,	cast(sum(y.sum_price) over(partition by y.category_id) as integer) 	as category_sum_price
 	,	cast(sum(y.sum_price) over()						   as integer)	as total_sum_price
 from	(
-			select	x.category_id
+			select	cd.category_id
 				  , x.division_id
 				  , cd.category_seq
-				  , sum(x.price) as sum_price
-			from	(
-						select	a.category_seq
-							,	a.price
-							,	a.division_id
-							,	c.*
-						from	account			a
-							,	category		c
-						where	1=1
-						and		a.category_id = c.category_id
-					) x
-			left outer join category_dtl	cd
+				  , coalesce(sum(x.sum_price), 0) as sum_price
+			from	category_dtl	cd
+			left outer join 
+			(
+				select	a.category_seq
+					,	sum(a.price)	   as sum_price
+					,	max(a.division_id) as division_id
+					,	a.category_id
+				from	account			a
+				where	1=1
+				and		a.account_dt between '20210901' and '20210930'
+				and 	a.division_id = %(division_id)s
+				group by a.category_id
+					   , a.category_seq
+			) x
 			on		x.category_id = cd.category_id
 			and		x.category_seq = cd.category_seq
 			where	1=1
-			group by x.category_id
+			group by cd.category_id
 				   , cd.category_seq
 				   , x.division_id
 		) y
-	,	division_category_mpng	dcm
+left outer join division_category_mpng	dcm
+on		y.division_id = dcm.division_id
+and		y.category_id = dcm.category_id 		
 where	1=1
-and		y.division_id = dcm.division_id
-and		y.category_id = dcm.category_id
-and		y.division_id = %(division_id)s
 order by cast(y.category_id as integer)
 	   , y.category_seq
 ;
