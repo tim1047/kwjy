@@ -117,7 +117,12 @@ class Account(APIView):
         error_message = None
 
         try:
-            result_data = main_account_book_service.get_main_list()
+            request_data = request.GET
+            param = {
+                'strt_dt': request_data.get('strtDt', ''),
+                'end_dt': request_data.get('endDt', '')
+            }
+            result_data = main_account_book_service.get_main_list(param)
         except Exception as e:
             result_message = 'FAIL'
             result_data = {}

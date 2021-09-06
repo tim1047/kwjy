@@ -33,6 +33,7 @@ from	(
 						and		a.member_id   	= am.member_id
 						and		a.payment_id  	= p.payment_id
 						and		a.category_id 	= c.category_id
+						and		a.account_dt between %(strt_dt)s and %(end_dt)s
 					) z
 					left outer join category_dtl	cd
 					on 		z.category_id 	= cd.category_id
