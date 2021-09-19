@@ -21,27 +21,60 @@ select	y.category_id
 			and		cd.category_seq = y.category_seq
 		) as category_seq_nm
 	,	y.sum_price
-	,	cast(sum(y.sum_price) over(partition by y.category_id) as integer) 	as category_sum_price
-	,	cast(sum(y.sum_price) over()						   as integer)	as total_sum_price
+	,	y.first_week_sum_price
+	,	y.second_week_sum_price
+	,	y.third_week_sum_price
+	,	y.fourth_week_sum_price
+	,	y.fifth_week_sum_price
+	,	y.sixth_week_sum_price
+	,	cast(sum(y.first_week_sum_price) over() as integer) 	as total_first_week_sum_price
+	,	cast(sum(y.second_week_sum_price) over() as integer) 	as total_second_week_sum_price
+	,	cast(sum(y.third_week_sum_price) over() as integer) 	as total_third_week_sum_price
+	,	cast(sum(y.fourth_week_sum_price) over() as integer) 	as total_fourth_week_sum_price
+	,	cast(sum(y.fifth_week_sum_price) over() as integer) 	as total_fifth_week_sum_price
+	,	cast(sum(y.sixth_week_sum_price) over() as integer) 	as total_sixth_week_sum_price
+	,	cast(sum(y.sum_price) over() as integer)				as total_sum_price
 from	(
 			select	cd.category_id
-				  , x.division_id
-				  , cd.category_seq
-				  , coalesce(sum(x.sum_price), 0) as sum_price
+				,	cd.category_seq
+				,	x.division_id
+				,	coalesce(sum(x.sum_price), 0) as sum_price
+				,	coalesce(sum(case when x.week = '1' then x.sum_price end), 0) as first_week_sum_price
+				,	coalesce(sum(case when x.week = '2' then x.sum_price end), 0) as second_week_sum_price
+				,	coalesce(sum(case when x.week = '3' then x.sum_price end), 0) as third_week_sum_price
+				,	coalesce(sum(case when x.week = '4' then x.sum_price end), 0) as fourth_week_sum_price
+				,	coalesce(sum(case when x.week = '5' then x.sum_price end), 0) as fifth_week_sum_price
+				,	coalesce(sum(case when x.week = '6' then x.sum_price end), 0) as sixth_week_sum_price
 			from	category_dtl	cd
-			left outer join 
-			(
-				select	a.category_seq
-					,	sum(a.price)	   as sum_price
-					,	max(a.division_id) as division_id
-					,	a.category_id
-				from	account			a
-				where	1=1
-				and		a.account_dt between '20210901' and '20210930'
-				and 	a.division_id = %(division_id)s
-				group by a.category_id
-					   , a.category_seq
-			) x
+			left outer join
+					(
+						select	a.week
+							,	a.category_id
+							,	a.category_seq
+							,	a.division_id
+							,	sum(a.price) as sum_price
+						from	(
+									select	a.price	   
+										,	a.division_id 
+										,	a.category_id
+										,	a.account_dt
+										,	a.category_seq
+										,  	CASE 
+												WHEN EXTRACT(DAY FROM  to_date(a.account_dt, 'YYYYMMDD')::TIMESTAMP)::INTEGER = 1
+													THEN 1 
+			    								ELSE extract(week from to_date(a.account_dt, 'YYYYMMDD'):: TIMESTAMP)::integer - extract(week from ( date_trunc('month', to_date(a.account_dt, 'YYYYMMDD')::TIMESTAMP) + interval  '1 day' ) )::integer + 1
+											end as week
+									from	account			a
+									where	1=1
+									and		a.account_dt between '20210901' and '20210930'
+									and 	a.division_id = %(division_id)s
+								) a
+						where	1=1
+						group by a.week
+							,	a.category_id
+							,	a.category_seq
+							,	a.division_id
+					) x
 			on		x.category_id = cd.category_id
 			and		x.category_seq = cd.category_seq
 			where	1=1
@@ -49,10 +82,12 @@ from	(
 				   , cd.category_seq
 				   , x.division_id
 		) y
-left outer join division_category_mpng	dcm
+left outer join 
+		division_category_mpng	dcm
 on		y.division_id = dcm.division_id
 and		y.category_id = dcm.category_id 		
 where	1=1
 order by cast(y.category_id as integer)
 	   , y.category_seq
 ;
+
