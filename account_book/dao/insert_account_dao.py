@@ -11,7 +11,7 @@ def get_member_list():
 
 def get_payment_list(param):
     sql_file = 'account_book/sql/get_payment_list.sql'
-    return select_list(sql_file)
+    return select_list(sql_file, param)
 
 def get_category_list_by_division_id(param):
     sql_file = 'account_book/sql/get_category_list_by_division_id.sql'
