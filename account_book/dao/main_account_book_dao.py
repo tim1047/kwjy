@@ -16,3 +16,7 @@ def get_category_seq_sum(param):
 def get_division_sum(param):
     sql_file = 'account_book/sql/get_division_sum.sql'
     return select_list(sql_file, param)
+
+def get_member_sum(param):
+    sql_file = 'account_book/sql/get_member_sum.sql'
+    return select_list(sql_file, param)

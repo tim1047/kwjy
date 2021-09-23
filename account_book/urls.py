@@ -12,5 +12,6 @@ urlpatterns = [
     path('account', views.Account.as_view()),
     path('category_sum/<str:division_id>', views.CategorySum.as_view()),
     path('category_seq_sum/<str:division_id>', views.CategorySeqSum.as_view()),
-    path('division_sum', views.DivisionSum.as_view())
+    path('division_sum', views.DivisionSum.as_view()),
+    path('member_sum', views.MemberSum.as_view())
 ]

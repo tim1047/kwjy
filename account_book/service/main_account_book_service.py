@@ -34,3 +34,6 @@ def get_division_sum(param):
     }
     return result
 
+def get_member_sum(param):
+    return main_account_book_dao.get_member_sum(param)
+
