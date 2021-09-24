@@ -63,7 +63,7 @@ from	(
 											end as week
 									from	account			a
 									where	1=1
-									and		a.account_dt between '20210901' and '20210930'
+									and		a.account_dt between %(strt_dt)s and %(end_dt)s
 									and 	a.division_id = %(division_id)s
 								) a
 						where	1=1
