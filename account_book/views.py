@@ -182,6 +182,12 @@ class CategorySum(APIView):
             param = {
                 'division_id': division_id
             }
+
+            request_data = request.GET
+            if request_data:
+                param['strt_dt'] = request_data.get('strtDt', '')
+                param['end_dt'] = request_data.get('endDt', '')
+
             result_data = main_account_book_service.get_category_sum(param)
         except Exception as e:
             result_message = 'FAIL'
@@ -203,6 +209,12 @@ class CategorySeqSum(APIView):
             param = {
                 'division_id': division_id
             }
+
+            request_data = request.GET
+            if request_data:
+                param['strt_dt'] = request_data.get('strtDt', '')
+                param['end_dt'] = request_data.get('endDt', '')
+                
             result_data = main_account_book_service.get_category_seq_sum(param)
         except Exception as e:
             result_message = 'FAIL'
