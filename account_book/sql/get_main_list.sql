@@ -3,10 +3,15 @@ select	(ROW_NUMBER() OVER()) AS seq
 from	(
 			select	z.account_id
 				,	z.account_dt
+				,	z.division_id
 				,	z.division_nm
+				, 	z.member_id
 				,	z.member_nm
+				,	z.payment_id
 				,	z.payment_nm
+				,	z.category_id
 				,	z.category_nm
+				,	z.category_seq
 				,	cd.category_seq_nm
 				,	z.price
 				,	z.remark
@@ -14,8 +19,11 @@ from	(
 			from	(
 						select	a.account_id
 							,	a.account_dt
+							,	a.division_id
 							,	d.division_nm
+							,	a.member_id
 							,	am.member_nm
+							,	a.payment_id
 							,	p.payment_nm
 							,	c.category_nm
 							,	a.price
