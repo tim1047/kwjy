@@ -20,3 +20,7 @@ def get_division_sum(param):
 def get_member_sum(param):
     sql_file = 'account_book/sql/get_member_sum.sql'
     return select_list(sql_file, param)
+
+def get_fixed_price_sum(param):
+    sql_file = 'account_book/sql/get_fixed_price_sum.sql'
+    return select_list(sql_file, param)

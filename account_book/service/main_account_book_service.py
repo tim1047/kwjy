@@ -37,3 +37,21 @@ def get_division_sum(param):
 def get_member_sum(param):
     return main_account_book_dao.get_member_sum(param)
 
+def get_fixed_price_sum(param):
+    result_list = []
+    fixed_price_sum_list = main_account_book_dao.get_fixed_price_sum(param)
+
+    for i in range(0, 6):
+        result = {
+            'week': i+1,
+            'sum_price': 0
+        }
+        result_list.append(result)
+
+    if fixed_price_sum_list:
+        for fixed_price_sum in fixed_price_sum_list:
+            week = fixed_price_sum.get('week')
+            result_list[week-1] = fixed_price_sum
+
+    return result_list
+
