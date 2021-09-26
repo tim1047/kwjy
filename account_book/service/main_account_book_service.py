@@ -23,7 +23,9 @@ def get_division_sum(param):
         elif division_id == '3':
             expense = division_sum.get('total_sum_price', 0)
     interest = income - expense
-    invest_rate = round(invest / income * 100, 1)
+
+    if income > 0:
+        invest_rate = round(invest / income * 100, 1)
     
     result = {
         'income': int(income),
