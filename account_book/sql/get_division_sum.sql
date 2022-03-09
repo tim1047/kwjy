@@ -41,5 +41,5 @@ from	(
 			group by z.division_id
 		) zz
 where	1=1
-order by zz.sum_price desc
+order by zz.total_sum_price desc
 ;
