@@ -10,4 +10,5 @@ from	account			a
 where	1=1
 and		a.account_dt between %(strt_dt)s and %(end_dt)s
 and		a.division_id = '3'
-group by a.sum_price desc, a.member_id
+group by a.member_id
+order by a.sum_price desc
