@@ -47,8 +47,8 @@ from	(
 					on 		z.category_id 	= cd.category_id
 					and		z.category_seq 	= cd.category_seq
 			where	1=1
-			order by z.account_dt
-				,	 z.account_id
+			order by z.account_dt desc
+				,	 z.account_id desc
 		) zz
 where	1=1
 ;
