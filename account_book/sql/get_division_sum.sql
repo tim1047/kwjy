@@ -36,5 +36,5 @@ from	(
 				, 	 y.division_id
 		) z
 where	1=1		
-group by z.division_id
+group by z.sum_price desc, z.division_id
 ;

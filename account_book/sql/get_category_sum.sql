@@ -91,4 +91,4 @@ left outer join
 on		zz.category_id 	= cp.category_id
 and		zz.account_yyyymm = cp.plan_dt
 where	1=1
-order by cast(zz.category_id as integer)
+order by zz.sum_price desc, cast(zz.category_id as integer)

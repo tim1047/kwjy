@@ -87,7 +87,8 @@ left outer join
 on		y.division_id = dcm.division_id
 and		y.category_id = dcm.category_id 		
 where	1=1
-order by cast(y.category_id as integer)
+order by y.sum_price desc
+	   , cast(y.category_id as integer)
 	   , y.category_seq
 ;
 
