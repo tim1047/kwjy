@@ -1,4 +1,4 @@
-select	z.**
+select	zz.*
 from	(
 			select 	z.division_id
 				,	(
