@@ -1,7 +1,7 @@
 select	cd.category_id
 	,	cd.category_seq
 	,	cd.category_seq_nm
-	,	a.sum_price
+	,	COALESCE(a.sum_price, 0) as sum_price
 from	category_dtl	cd
 left outer join
 		(
