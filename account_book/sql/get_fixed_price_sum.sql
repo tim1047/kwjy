@@ -22,4 +22,6 @@ on		cd.category_id = a.category_id
 and		cd.category_seq = a.category_seq
 where	1=1
 and		cd.fixed_price_yn = 'Y'
+order by cd.category_id
+	,	cd.category_seq
 ;
