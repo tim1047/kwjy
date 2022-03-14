@@ -40,5 +40,28 @@ def get_member_sum(param):
     return main_account_book_dao.get_member_sum(param)
 
 def get_fixed_price_sum(param):
-    result_list = []
     return main_account_book_dao.get_fixed_price_sum(param)
+
+def get_division_sum_daily(param):
+    result_list = []
+    
+    division_sum_daily_list = main_account_book_dao.get_division_sum_daily(param)
+    division_sum_daily_info = {}
+    for item in division_sum_daily_list:
+        if not division_sum_daily_info.get(item.get('account_dt'), {}):
+            division_sum_daily_info[item.get('account_dt')] = {
+                'income': 0,
+                'invest': 0,
+                'expense': 0,
+                'account_dt': item.get('account_dt')
+            }
+        if item.get('division_id', '') == '1':
+            division_sum_daily_info[item.get('account_dt')]['income'] = item.get('sum_price', 0)
+        elif item.get('division_id', '') == '2':
+            division_sum_daily_info[item.get('account_dt')]['invest'] = item.get('sum_price', 0)
+        elif item.get('division_id', '') == '3':
+            division_sum_daily_info[item.get('account_dt')]['expense'] = item.get('sum_price', 0)
+    
+    for key, val in division_sum_daily_info.items():
+        result_list.append(val)
+    return result_list

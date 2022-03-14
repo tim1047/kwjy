@@ -14,5 +14,6 @@ urlpatterns = [
     path('category_seq_sum/<str:division_id>', views.CategorySeqSum.as_view()),
     path('division_sum', views.DivisionSum.as_view()),
     path('member_sum', views.MemberSum.as_view()),
-    path('fixed_price_sum', views.FixedPriceSum.as_view())
+    path('fixed_price_sum', views.FixedPriceSum.as_view()),
+    path('division_sum_daily', views.DivisionSumDaily.as_view())
 ]

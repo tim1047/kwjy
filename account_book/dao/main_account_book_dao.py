@@ -24,3 +24,7 @@ def get_member_sum(param):
 def get_fixed_price_sum(param):
     sql_file = 'account_book/sql/get_fixed_price_sum.sql'
     return select_list(sql_file, param)
+
+def get_division_sum_daily(param):
+    sql_file = 'account_book/sql/get_division_sum_daily.sql'
+    return select_list(sql_file, param)
