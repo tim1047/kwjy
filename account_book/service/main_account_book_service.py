@@ -87,14 +87,12 @@ def get_expense_sum_daily(param):
     for i in range(0, diff):
         val = str(strt_year) + ('0' + str(strt_month) if strt_month < 10 else str(strt_month))
         account_dt_mpng[val] = i
-        result_list[0].append(val)
+        result_list[0].append(val[0:4] + '년 ' + val[4:6] + '일')
         
         if strt_month == 12:
             strt_year += 1
             strt_month = 0
         strt_month += 1
-
-    print(account_dt_mpng)
 
     expense_sum_daily_info = {}
     for expense_sum_daily in expense_sum_daily_list:    
@@ -122,7 +120,7 @@ def get_expense_sum_daily(param):
     for i in range(1, 32):
         result_info_list = expense_sum_daily_info.get(i)
         temp = list()
-        temp.append(str(i))
+        temp.append(str(i) + '일')
         temp.extend(result_info_list)
         result_list.append(temp)
     return result_list
