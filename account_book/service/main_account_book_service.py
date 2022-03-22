@@ -65,3 +65,62 @@ def get_division_sum_daily(param):
     for key, val in division_sum_daily_info.items():
         result_list.append(val)
     return result_list
+
+def get_expense_sum_daily(param):
+    result_list = [['일자']]
+
+    expense_sum_daily_list = main_account_book_dao.get_expense_sum_daily(param)
+
+    strt_dt = param.get('strt_dt')
+    end_dt = param.get('end_dt')
+
+    strt_year = int(strt_dt[0:4])
+    strt_month = int(strt_dt[4:6])
+    end_year = int(end_dt[0:4])
+    end_month = int(end_dt[4:6])
+
+    year_diff = end_year - strt_year
+    month_diff = end_month - strt_month
+    diff = year_diff * 12 + month_diff + 1
+
+    account_dt_mpng = {}
+    for i in range(0, diff):
+        val = str(strt_year) + '0' + str(strt_month) if strt_month < 10 else str(strt_month) 
+        account_dt_mpng[val] = i
+        result_list[0].append(val)
+        
+        if strt_month == 12:
+            strt_year += 1
+            strt_month = 1
+        strt_month += 1
+
+    expense_sum_daily_info = {}
+    for expense_sum_daily in expense_sum_daily_list:    
+        day = int(expense_sum_daily.get('account_dd'))
+
+        if expense_sum_daily_info.get(day, None) is None:
+            expense_sum_daily_info[day] = []
+            for i in range(0, diff):
+                expense_sum_daily_info[day].append(0)
+        expense_sum_daily_info[day][account_dt_mpng[expense_sum_daily.get('account_yyyymm')]] = (expense_sum_daily.get('sum_price'))
+
+    for i in range(1, 32):
+        if expense_sum_daily_info.get(i, None) is None:
+            expense_sum_daily_info[i] = []
+            for ii in range(0, diff):
+                expense_sum_daily_info[i].append(0)
+
+        cur_expense_sum_list = expense_sum_daily_info.get(i)
+        prev_expense_sum_list = expense_sum_daily_info.get(i - 1, [])
+
+        if prev_expense_sum_list:
+            for j in range(0, len(prev_expense_sum_list)):
+                cur_expense_sum_list[j] += prev_expense_sum_list[j]            
+    
+    for i in range(1, 32):
+        result_info_list = expense_sum_daily_info.get(i)
+        temp = list()
+        temp.append(str(i))
+        temp.extend(result_info_list)
+        result_list.append(temp)
+    return result_list

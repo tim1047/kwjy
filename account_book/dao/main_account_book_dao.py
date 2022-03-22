@@ -28,3 +28,7 @@ def get_fixed_price_sum(param):
 def get_division_sum_daily(param):
     sql_file = 'account_book/sql/get_division_sum_daily.sql'
     return select_list(sql_file, param)
+
+def get_expense_sum_daily(param):
+    sql_file = 'account_book/sql/get_expense_sum_daily.sql'
+    return select_list(sql_file, param)

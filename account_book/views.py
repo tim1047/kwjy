@@ -317,4 +317,28 @@ class DivisionSumDaily(APIView):
 
     def post(self, request):
         return Response({'result_message': 'SUCCESS'})
+
+    
+class ExpenseSumDaily(APIView):
+    def get(self, request):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            request_data = request.GET
+            param = {
+                'strt_dt': request_data.get('strtDt', ''),
+                'end_dt': request_data.get('endDt', '')
+            }
+            result_data = main_account_book_service.get_expense_sum_daily(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})
         
