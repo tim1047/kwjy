@@ -44,3 +44,7 @@ def get_asset_list():
 def insert_my_asset(param):
     sql_file = 'account_book/sql/insert_my_asset.sql'
     insert(sql_file, param)
+
+def update_my_asset(param):
+    sql_file = 'account_book/sql/update_my_asset.sql'
+    update(sql_file, param)

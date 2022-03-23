@@ -175,3 +175,6 @@ def get_asset_list():
 
 def insert_my_asset(param):
     return main_account_book_dao.insert_my_asset(param)
+
+def update_my_asset(param):
+    return main_account_book_dao.update_my_asset(param)
