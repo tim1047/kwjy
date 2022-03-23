@@ -17,5 +17,6 @@ urlpatterns = [
     path('fixed_price_sum', views.FixedPriceSum.as_view()),
     path('division_sum_daily', views.DivisionSumDaily.as_view()),
     path('expense_sum_daily', views.ExpenseSumDaily.as_view()),
-    path('my_asset_list', views.MyAssetList.as_view())
+    path('my_asset_list', views.MyAssetList.as_view()),
+    path('asset_list', views.AssetList.as_view())
 ]

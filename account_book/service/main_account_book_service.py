@@ -147,7 +147,7 @@ def get_my_asset_list(param):
 
         if my_asset.get('exchange_rate_yn', 'N') == 'Y':
             price *= usd_krw_rate
-            
+
         sum_price = int(price * qty)
         my_asset['sum_price'] = sum_price
 
@@ -167,3 +167,6 @@ def get_my_asset_list(param):
     result_info['tot_sum_price'] = tot_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
     return result_info
+
+def get_asset_list():
+    return main_account_book_dao.get_asset_list()
