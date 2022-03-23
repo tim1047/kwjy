@@ -178,3 +178,6 @@ def insert_my_asset(param):
 
 def update_my_asset(param):
     return main_account_book_dao.update_my_asset(param)
+
+def delete_my_asset(param):
+    return main_account_book_dao.delete_my_asset(param)

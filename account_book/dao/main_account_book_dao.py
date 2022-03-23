@@ -1,4 +1,4 @@
-from account_book.dao.dao_utils import load_sql_file, select_list, insert, update
+from account_book.dao.dao_utils import load_sql_file, select_list, insert, update, delete
 
 
 def get_main_list(param):
@@ -48,3 +48,7 @@ def insert_my_asset(param):
 def update_my_asset(param):
     sql_file = 'account_book/sql/update_my_asset.sql'
     update(sql_file, param)
+
+def delete_my_asset(param):
+    sql_file = 'account_book/sql/delete_my_asset.sql'
+    delete(sql_file, param)
