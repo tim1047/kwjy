@@ -127,7 +127,9 @@ def get_expense_sum_daily(param):
     return result_list
 
 def get_my_asset_list(param):
-    result_info = {}
+    result_info = {
+        'data': {}
+    }
     proc_dt = param.get('strt_dt')
     tot_sum_price = 0
     usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
@@ -156,13 +158,13 @@ def get_my_asset_list(param):
         tot_sum_price += sum_price
         
         asset_id = my_asset.get('asset_id')
-        if result_info.get(asset_id, None) is None:
-            result_info[asset_id] = {
+        if result_info.get('data').get(asset_id, None) is None:
+            result_info['data'][asset_id] = {
                 'asset_nm': my_asset.get('asset_nm'),
                 'data': []
             }
 
-        result_info[asset_id]['data'].append(my_asset)
+        result_info['data'][asset_id]['data'].append(my_asset)
     
     result_info['tot_sum_price'] = tot_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
