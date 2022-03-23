@@ -1,4 +1,5 @@
 import account_book.dao.main_account_book_dao as main_account_book_dao
+import account_book.service.asset_service as asset_service
 
 
 def get_main_list(param):
@@ -124,3 +125,23 @@ def get_expense_sum_daily(param):
         temp.extend(result_info_list)
         result_list.append(temp)
     return result_list
+
+def get_my_asset_list(param):
+    result_list = []
+    proc_dt = param.get('strt_dt')
+
+    my_asset_list = main_account_book_dao.get_my_asset_list(param)
+    for my_asset in my_asset_list:
+        price_div_cd = my_asset.get('price_div_cd')
+        price = my_asset.get('price', 0)
+        qty = my_asset.get('qty', 0)
+        
+        if price_div_cd == 'AUTO':
+            # 가격조회
+            if my_asset.get('asset_id') in ['1', '2']:
+                price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
+            elif my_asset.get('asset_id') == '3':
+                price = asset_service.get_crypto_price(my_asset.get('ticker'), None)        
+
+        my_asset['sum_price'] = int(price * qty)
+    return my_asset_list

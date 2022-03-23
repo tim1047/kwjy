@@ -32,3 +32,7 @@ def get_division_sum_daily(param):
 def get_expense_sum_daily(param):
     sql_file = 'account_book/sql/get_expense_sum_daily.sql'
     return select_list(sql_file, param)
+
+def get_my_asset_list(param):
+    sql_file = 'account_book/sql/get_my_asset_list.sql'
+    return select_list(sql_file, param)
