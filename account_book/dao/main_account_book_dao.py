@@ -1,4 +1,4 @@
-from account_book.dao.dao_utils import load_sql_file, select_list
+from account_book.dao.dao_utils import load_sql_file, select_list, insert, update
 
 
 def get_main_list(param):
@@ -40,3 +40,7 @@ def get_my_asset_list(param):
 def get_asset_list():
     sql_file = 'account_book/sql/get_asset_list.sql'
     return select_list(sql_file, None)
+
+def insert_my_asset(param):
+    sql_file = 'account_book/sql/insert_my_asset.sql'
+    insert(sql_file, param)
