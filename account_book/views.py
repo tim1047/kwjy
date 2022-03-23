@@ -393,7 +393,7 @@ class MyAsset(APIView):
         error_message = None
 
         try:
-            result_data = main_account_book_service.get_asset_list()
+            result_data = main_account_book_service.insert_my_asset(request.data)
         except Exception as e:
             result_message = 'FAIL'
             result_data = {}
