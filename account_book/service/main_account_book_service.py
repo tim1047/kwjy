@@ -129,6 +129,7 @@ def get_expense_sum_daily(param):
 def get_my_asset_list(param):
     result_info = {}
     proc_dt = param.get('strt_dt')
+    tot_sum_price = 0
 
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
     for my_asset in my_asset_list:
@@ -143,7 +144,12 @@ def get_my_asset_list(param):
             elif my_asset.get('asset_id') == '3':
                 price = asset_service.get_crypto_price(my_asset.get('ticker'), None)        
 
-        my_asset['sum_price'] = int(price * qty)
+        sum_price = int(price * qty)
+        my_asset['sum_price'] = sum_price
+
+        if my_asset.get('asset_id') == '6':
+            sum_price *= -1
+        tot_sum_price += sum_price
         
         asset_id = my_asset.get('asset_id')
         if result_info.get(asset_id, None) is None:
@@ -153,5 +159,6 @@ def get_my_asset_list(param):
             }
 
         result_info[asset_id]['data'].append(my_asset)
-
+    
+    result_info['tot_sum_price'] = tot_sum_price
     return result_info
