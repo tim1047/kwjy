@@ -6,6 +6,7 @@ select	ma.asset_id
 	,	ma.price
 	,	ma.qty
 	, 	a.asset_nm
+	, 	ma.exchange_rate_yn
 from	my_asset	ma
 	,	asset		a
 where	1=1

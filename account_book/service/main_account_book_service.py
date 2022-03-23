@@ -130,6 +130,7 @@ def get_my_asset_list(param):
     result_info = {}
     proc_dt = param.get('strt_dt')
     tot_sum_price = 0
+    usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
 
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
     for my_asset in my_asset_list:
@@ -142,8 +143,11 @@ def get_my_asset_list(param):
             if my_asset.get('asset_id') in ['1', '2']:
                 price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '3':
-                price = asset_service.get_crypto_price(my_asset.get('ticker'), None)        
+                price = asset_service.get_crypto_price(my_asset.get('ticker'), None)  
 
+        if my_asset.get('exchange_rate_yn', 'N') == 'Y':
+            price *= usd_krw_rate
+            
         sum_price = int(price * qty)
         my_asset['sum_price'] = sum_price
 
@@ -161,4 +165,5 @@ def get_my_asset_list(param):
         result_info[asset_id]['data'].append(my_asset)
     
     result_info['tot_sum_price'] = tot_sum_price
+    result_info['usd_krw_rate'] = usd_krw_rate
     return result_info

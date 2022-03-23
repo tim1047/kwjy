@@ -9,3 +9,7 @@ def get_stock_price(ticker, dt):
 def get_crypto_price(ticker, dt):
     df_crypto = pyupbit.get_ohlcv('KRW-' + ticker, count=1, interval='day')
     return int(df_crypto['close'][0])
+
+def get_usd_krw_rate(dt):
+    df_usd = fdr.DataReader('USD/KRW', dt, dt)
+    return int(df_usd['Close'][0])
