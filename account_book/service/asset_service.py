@@ -1,12 +1,15 @@
 import FinanceDataReader as fdr
 import pyupbit
+import datetime
 
 
 def get_stock_price(ticker, dt):
     df_stock = fdr.DataReader(ticker, dt, dt)
     
     if len(df_stock) == 0:
-        df_stock = fdr.DataReader(ticker).tail(1)
+        dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
+        dt = dt_date - datetime.timedelta(days=7)
+        df_stock = fdr.DataReader(ticker, dt).tail(1)
     return int(df_stock['Close'][0])
 
 def get_crypto_price(ticker, dt):
