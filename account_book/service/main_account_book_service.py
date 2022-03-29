@@ -161,9 +161,11 @@ def get_my_asset_list(param):
         if result_info.get('data').get(asset_id, None) is None:
             result_info['data'][asset_id] = {
                 'asset_nm': my_asset.get('asset_nm'),
+                'asset_tot_sum_price': 0,
                 'data': []
             }
-
+        
+        result_info['data'][asset_id]['asset_tot_sum_price'] += sum_price
         result_info['data'][asset_id]['data'].append(my_asset)
     
     result_info['tot_sum_price'] = tot_sum_price
