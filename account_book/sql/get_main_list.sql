@@ -42,6 +42,9 @@ from	(
 						and		a.payment_id  	= p.payment_id
 						and		a.category_id 	= c.category_id
 						and		a.account_dt between %(strt_dt)s and %(end_dt)s
+						and		(%(search_division_id)s = '' or a.division_id = %(search_division_id)s)
+						and		(%(search_category_id)s = '' or a.category_id = %(search_category_id)s)
+						and		(%(search_category_seq)s = '' or a.category_seq = %(search_category_seq)s)
 					) z
 					left outer join category_dtl	cd
 					on 		z.category_id 	= cd.category_id

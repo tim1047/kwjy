@@ -120,7 +120,10 @@ class Account(APIView):
             request_data = request.GET
             param = {
                 'strt_dt': request_data.get('strtDt', ''),
-                'end_dt': request_data.get('endDt', '')
+                'end_dt': request_data.get('endDt', ''),
+                'search_division_id': request_data.get('searchDivisionId', ''),
+                'search_category_id': request_data.get('searchCategoryId', ''),
+                'search_category_seq': request_data.get('searchCategorySeq', '')
             }
             result_data = main_account_book_service.get_main_list(param)
         except Exception as e:
