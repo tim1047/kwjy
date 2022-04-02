@@ -18,4 +18,9 @@ def get_crypto_price(ticker, dt):
 
 def get_usd_krw_rate(dt):
     df_usd = fdr.DataReader('USD/KRW', dt, dt)
+
+    if len(df_usd) == 0:
+        dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
+        dt = dt_date - datetime.timedelta(days=7)
+        df_usd = fdr.DataReader('USD/KRW', dt).tail(1)
     return int(df_usd['Close'][0])
