@@ -50,7 +50,7 @@ from	(
 					on 		z.category_id 	= cd.category_id
 					and		z.category_seq 	= cd.category_seq
 			where	1=1
-			and		cd.fixed_price_yn = %(search_fixed_price_yn)s
+			and		coalesce(cd.fixed_price_yn, 'N') = %(search_fixed_price_yn)s
 			order by z.account_dt desc
 				,	 z.account_id desc
 		) zz
