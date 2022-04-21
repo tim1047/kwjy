@@ -43,6 +43,7 @@ from	(
 						and		a.category_id 	= c.category_id
 						and		a.account_dt between %(strt_dt)s and %(end_dt)s
 						and		(%(search_division_id)s = '' or a.division_id = %(search_division_id)s)
+						and		(%(search_member_id)s = '' or a.member_id = %(search_member_id)s)
 						and		(%(search_category_id)s = '' or a.category_id = %(search_category_id)s)
 						and		(%(search_category_seq)s = '' or a.category_seq = %(search_category_seq)s)
 					) z
