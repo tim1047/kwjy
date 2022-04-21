@@ -122,6 +122,7 @@ class Account(APIView):
                 'strt_dt': request_data.get('strtDt', ''),
                 'end_dt': request_data.get('endDt', ''),
                 'search_division_id': request_data.get('searchDivisionId', ''),
+                'search_member_id': request_data.get('searchMemberId', ''),
                 'search_category_id': request_data.get('searchCategoryId', ''),
                 'search_category_seq': request_data.get('searchCategorySeq', ''),
                 'search_fixed_price_yn': request_data.get('searchFixedPriceYn', '')
