@@ -20,6 +20,7 @@ select	y.category_id
 			and		cd.category_id = y.category_id
 			and		cd.category_seq = y.category_seq
 		) as category_seq_nm
+	, 	y.fixed_price_yn
 	,	y.sum_price
 	,	y.first_week_sum_price
 	,	y.second_week_sum_price
@@ -37,6 +38,7 @@ select	y.category_id
 from	(
 			select	cd.category_id
 				,	cd.category_seq
+				,	cd.fixed_price_yn
 				,	x.division_id
 				,	coalesce(sum(x.sum_price), 0) as sum_price
 				,	coalesce(sum(case when x.week = '1' then x.sum_price end), 0) as first_week_sum_price
