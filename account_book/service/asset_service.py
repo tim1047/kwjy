@@ -1,6 +1,7 @@
 import FinanceDataReader as fdr
 import pyupbit
 import datetime
+import yfinance as yf
 
 
 def get_stock_price(ticker, dt):
@@ -17,10 +18,10 @@ def get_crypto_price(ticker, dt):
     return int(df_crypto['close'][0])
 
 def get_usd_krw_rate(dt):
-    df_usd = fdr.DataReader('USD/KRW', dt, dt)
+    dt = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y%m%d'), '%Y-%m-%d')
+    df_usd = yf.download(['USDKRW=X'], start=dt, end=dt)
 
     if len(df_usd) == 0:
-        dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
-        dt = dt_date - datetime.timedelta(days=7)
-        df_usd = fdr.DataReader('USD/KRW', dt).tail(1)
-    return int(df_usd['Close'][0])
+        dt_date = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d')
+        df_usd = fdr.DataReader('USD/KRW', start=dt_date, end=dt)
+    return int(df_usd['Close'][-1])
