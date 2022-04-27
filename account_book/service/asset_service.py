@@ -1,8 +1,9 @@
 import FinanceDataReader as fdr
-import pyupbit
+from pycoingecko import CoinGeckoAPI
 import datetime
 import yfinance as yf
 
+cg = CoinGeckoAPI()
 
 def get_stock_price(ticker, dt):
     df_stock = fdr.DataReader(ticker, dt, dt)
@@ -11,11 +12,11 @@ def get_stock_price(ticker, dt):
         dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
         dt = dt_date - datetime.timedelta(days=7)
         df_stock = fdr.DataReader(ticker, dt).tail(1)
-    return int(df_stock['Close'][0])
+    return float(df_stock['Close'][0])
 
-def get_crypto_price(ticker, dt):
-    df_crypto = pyupbit.get_ohlcv('KRW-' + ticker, count=1, interval='day')
-    return int(df_crypto['close'][0])
+def get_crypto_price(coin_id, dt):
+    crypto_price = cg.get_price(ids=coin_id, vs_currencies='usd')
+    return float(crypto_price.get(coin_id, {}).get('usd', '0'))
 
 def get_usd_krw_rate(dt):
     dt = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y%m%d'), '%Y-%m-%d')

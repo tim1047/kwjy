@@ -137,15 +137,15 @@ def get_my_asset_list(param):
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
     for my_asset in my_asset_list:
         price_div_cd = my_asset.get('price_div_cd')
-        price = my_asset.get('price', 0)
-        qty = my_asset.get('qty', 0)
+        price = float(my_asset.get('price', 0))
+        qty = float(my_asset.get('qty', 0))
         
         if price_div_cd == 'AUTO':
             # 가격조회
             if my_asset.get('asset_id') in ['1', '2']:
                 price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '3':
-                price = asset_service.get_crypto_price(my_asset.get('ticker'), None)  
+                price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)  
 
         if my_asset.get('exchange_rate_yn', 'N') == 'Y':
             price *= usd_krw_rate
