@@ -437,3 +437,26 @@ class MyAsset(APIView):
             error_message = ''.join(traceback.format_exception(*exc_info))
         return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
         
+class DivisionSumByDivisionId(APIView):
+    def get(self, request, division_id):
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            request_data = request.GET
+            param = {
+                'proc_dt': request_data.get('procDt', ''),
+                'division_id': division_id
+            }
+
+            result_data = main_account_book_service.get_division_sum_by_division_id(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
+
+    def post(self, request):
+        return Response({'result_message': 'SUCCESS'})

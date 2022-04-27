@@ -1,5 +1,8 @@
 import account_book.dao.main_account_book_dao as main_account_book_dao
 import account_book.service.asset_service as asset_service
+import datetime
+from datetime import timedelta
+from dateutil import relativedelta
 
 
 def get_main_list(param):
@@ -183,3 +186,41 @@ def update_my_asset(param):
 
 def delete_my_asset(param):
     return main_account_book_dao.delete_my_asset(param)
+
+def get_division_sum_by_division_id(param):
+    proc_dt = param.get('proc_dt', '')
+    division_id = param.get('division_id', '')
+
+    year = datetime.datetime.strptime(proc_dt, '%Y%m').year
+    month = datetime.datetime.strptime(proc_dt, '%Y%m').month
+
+    result_list = []
+    result = {}
+    avg_total_sum_price = 0
+    total_month = 6
+
+    for i in range(0, total_month):
+        if month == 1:
+            month = 12
+            year = year - 1
+        else:
+            month = month - 1
+        
+        first_day = datetime.datetime(year=year, month=month, day=1).date()
+        last_day = first_day + relativedelta.relativedelta(months=1) - timedelta(days=1)
+        
+        param = {
+            'strt_dt': datetime.datetime.strftime(first_day, '%Y%m%d'),
+            'end_dt': datetime.datetime.strftime(last_day, '%Y%m%d')
+        }
+        division_sum_list = main_account_book_dao.get_division_sum(param)
+        for division_sum in division_sum_list:
+            if division_sum.get('division_id', '') == division_id:
+                avg_total_sum_price = avg_total_sum_price + division_sum['total_sum_price']
+
+                division_sum['month'] = month
+                result_list.append(division_sum)
+
+    result['avg_total_sum_price'] = int(avg_total_sum_price / total_month)
+    result['data'] = list(reversed(result_list))
+    return result

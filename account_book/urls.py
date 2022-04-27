@@ -19,5 +19,6 @@ urlpatterns = [
     path('expense_sum_daily', views.ExpenseSumDaily.as_view()),
     path('my_asset_list', views.MyAssetList.as_view()),
     path('asset_list', views.AssetList.as_view()),
-    path('my_asset', views.MyAsset.as_view())
+    path('my_asset', views.MyAsset.as_view()),
+    path('division_sum/<str:division_id>', views.DivisionSumByDivisionId.as_view())
 ]
