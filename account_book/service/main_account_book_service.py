@@ -199,6 +199,7 @@ def get_division_sum_by_division_id(param):
     avg_total_sum_price = 0
     total_month = 6
 
+    month = month + 1
     for i in range(0, total_month):
         if month == 1:
             month = 12
