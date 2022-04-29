@@ -52,3 +52,11 @@ def update_my_asset(param):
 def delete_my_asset(param):
     sql_file = 'account_book/sql/delete_my_asset.sql'
     delete(sql_file, param)
+
+def insert_my_asset_accum(param):
+    sql_file = 'account_book/sql/insert_my_asset_accum.sql'
+    insert(sql_file, param)
+
+def get_my_asset_accum_list(param):
+    sql_file = 'account_book/sql/get_my_asset_accum_list.sql'
+    return select_list(sql_file, param)

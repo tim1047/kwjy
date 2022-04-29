@@ -136,7 +136,7 @@ def get_my_asset_list(param):
     proc_dt = param.get('strt_dt')
     tot_sum_price = 0
     usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
-
+    
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
     for my_asset in my_asset_list:
         price_div_cd = my_asset.get('price_div_cd')
@@ -225,3 +225,58 @@ def get_division_sum_by_division_id(param):
     result['avg_total_sum_price'] = int(avg_total_sum_price / total_month)
     result['data'] = list(reversed(result_list))
     return result
+
+def get_my_asset_accum(param):
+    result_list = []
+
+    strt_dt = param.get('strt_dt', '')
+    end_dt = param.get('end_dt', '')
+
+    strt_year = datetime.datetime.strptime(strt_dt, '%Y%m%d').year
+    strt_month = datetime.datetime.strptime(strt_dt, '%Y%m%d').month
+    end_year = datetime.datetime.strptime(end_dt, '%Y%m%d').year
+    end_month = datetime.datetime.strptime(end_dt, '%Y%m%d').month
+
+    diff_month = (end_year - strt_year) * 12 + (end_month - strt_month)
+    for i in range(0, diff_month + 1):
+        proc_dt = str(strt_year) + str(strt_month).rjust(2, '0')
+        
+        strt_month += 1
+        if strt_month > 12:
+            strt_month = 1
+            strt_year += 1
+
+        param['proc_dt'] = proc_dt
+        my_asset_accum_list = main_account_book_dao.get_my_asset_accum_list(param)
+        
+        total_sum_price = 0
+        for my_asset_accum in my_asset_accum_list:
+            total_sum_price += my_asset_accum.get('total_sum_price', 0)
+
+        my_asset_accum_info = {}
+        my_asset_accum_info['data'] = my_asset_accum_list
+        my_asset_accum_info['total_sum_price'] = int(total_sum_price)
+        my_asset_accum_info['accum_dt'] = proc_dt
+        
+        result_list.append(my_asset_accum_info)
+    return result_list
+
+def insert_my_asset_accum(param):
+    proc_dt = param.get('procDt', '')
+    exchange_rate = asset_service.get_usd_krw_rate(proc_dt)
+
+    my_asset_list = main_account_book_dao.get_my_asset_list(param)
+    for my_asset in my_asset_list:
+        price = float(my_asset.get('price', 0))
+        if my_asset['price_div_cd'] == 'AUTO':
+            if my_asset['asset_id'] == '1':
+                price = asset_service.get_stock_price(my_asset['ticker'], proc_dt)
+            elif my_asset['asset_id'] == '3':
+                price = asset_service.get_crypto_price(my_asset['coin_id'], None)
+            
+        if my_asset['exchange_rate_yn'] == 'Y':
+            price *= exchange_rate
+
+        my_asset['accum_dt'] = proc_dt[0:6]
+        my_asset['price'] = price
+        main_account_book_dao.insert_my_asset_accum(my_asset)
