@@ -8,3 +8,4 @@ where	1=1
 and		ma.asset_id = a.asset_id
 and		ma.accum_dt = %(proc_dt)s
 group by ma.accum_dt, ma.asset_id, a.asset_nm
+order by ma.asset_id
