@@ -40,7 +40,7 @@ from	(
 							,	coalesce(sum(case when x.week = '4' then x.sum_price end), 0) as fourth_week_sum_price
 							,	coalesce(sum(case when x.week = '5' then x.sum_price end), 0) as fifth_week_sum_price
 							,	coalesce(sum(case when x.week = '6' then x.sum_price end), 0) as sixth_week_sum_price
-							,	max(x.account_yyyymm)	as account_yyyymm
+							,	to_char(now(), 'YYYYMM')									  as account_yyyymm
 						from	(
 									select	c.category_id
 										  , dcm.division_id
@@ -56,7 +56,6 @@ from	(
 										,	max(a.division_id) 		as division_id
 										,	a.category_id
 										, 	a.week
-										,	substring(max(a.account_dt), 0, 7)	as account_yyyymm
 									from	(
 												select	a.price
 													,	a.division_id
