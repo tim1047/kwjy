@@ -1,8 +1,11 @@
 from django.db import connection
+from django.conf import settings
 
+
+BASE_DIR = getattr(settings, 'BASE_DIR', '')
 
 def load_sql_file(sql_file):
-    with open(sql_file, 'r', encoding='utf8') as f:
+    with open(BASE_DIR + '/' + sql_file, 'r', encoding='utf8') as f:
         line = f.read()
     return line
 
