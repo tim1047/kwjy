@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'account_book',
     'rest_framework',
     'corsheaders',
+    'django_crontab',
 ]
 
 # Django REST Framework
@@ -136,3 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CRONJOBS = [
+    ('* * * * *', 'account_book.cron.asset_accum', '>> test.log'),
+]
