@@ -263,6 +263,9 @@ def get_my_asset_accum(param):
 
 def insert_my_asset_accum(param):
     proc_dt = param.get('procDt', '')
+    
+    main_account_book_dao.delete_my_asset_accum(param)
+    
     exchange_rate = asset_service.get_usd_krw_rate(proc_dt)
 
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
