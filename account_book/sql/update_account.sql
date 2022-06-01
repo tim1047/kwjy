@@ -8,6 +8,7 @@ set     account_dt      = coalesce(nullif(%(account_dt)s, ''), account_dt)
     ,   price           = coalesce(nullif(%(price)s, 0), price)
     ,   remark          = %(remark)s
     ,   impulse_yn      = coalesce(nullif(%(impulse_yn)s, ''), impulse_yn)
+    ,   point_yn        = coalesce(nullif(%(point_yn)s, ''), point_yn)
     ,   mod_dts         = now()
 where   1=1
 and     account_id = %(account_id)s
