@@ -1,7 +1,7 @@
 
 select	b.*
 from	(
-			select	sum(a.price)	as sum_price
+			select	sum(case when a.point_yn = 'Y' and a.division_id = '3' then 0 else a.price end)	   as sum_price
 				,	a.member_id
 				,	(
 						select	member_nm

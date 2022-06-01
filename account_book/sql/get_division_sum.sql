@@ -14,7 +14,7 @@ from	(
 							,	coalesce(sum(x.sum_price), 0)	as sum_price
 						from	(
 									select	c.category_id
-										, dcm.division_id
+										, 	dcm.division_id
 									from	category	c
 										,	division_category_mpng	dcm
 									where	1=1
@@ -22,7 +22,7 @@ from	(
 								) y
 						left outer join 
 								(
-									select	sum(a.price)	   as sum_price
+									select	sum(case when a.point_yn = 'Y' and a.division_id = '3' then 0 else a.price end)	   as sum_price
 										,	max(a.division_id) as division_id
 										,	a.category_id
 									from	account			a

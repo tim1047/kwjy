@@ -6,7 +6,7 @@ from	(
 				,	substring(b.account_dt, 7, 9) as account_dd
 			from	(
 						select	a.account_dt
-							,	sum(a.price) as sum_price
+							,	sum(case when a.point_yn = 'Y' and a.division_id = '3' then 0 else a.price end)	   as sum_price
 						from	account	a
 						where	1=1
 						and		a.account_dt between %(strt_dt)s and %(end_dt)s

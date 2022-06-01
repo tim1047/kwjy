@@ -56,7 +56,7 @@ from	(
 							,	a.division_id
 							,	sum(a.price) as sum_price
 						from	(
-									select	a.price	   
+									select	case when a.point_yn = 'Y' and a.division_id = '3' then 0 else a.price end	as price
 										,	a.division_id 
 										,	a.category_id
 										,	a.account_dt
