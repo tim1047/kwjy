@@ -16,6 +16,7 @@ from	(
 				,	z.price
 				,	z.remark
 				,	z.impulse_yn
+				,	z.point_yn
 			from	(
 						select	a.account_id
 							,	a.account_dt
@@ -31,6 +32,7 @@ from	(
 							,	a.impulse_yn
 							,	a.category_id
 							,	a.category_seq
+							,	a.point_yn
 						from	account			a
 							,	division		d
 							,	account_member	am
