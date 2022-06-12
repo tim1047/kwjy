@@ -3,6 +3,7 @@ import account_book.service.asset_service as asset_service
 import datetime
 from datetime import timedelta
 from dateutil import relativedelta
+import asyncio
 
 
 def get_main_list(param):
@@ -136,26 +137,40 @@ def get_my_asset_list(param):
     proc_dt = param.get('strt_dt')
     tot_sum_price = 0
     usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
-    
+
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
-    for my_asset in my_asset_list:
+
+    async def get_price_async(my_asset):
         price_div_cd = my_asset.get('price_div_cd')
         price = float(my_asset.get('price', 0))
         qty = float(my_asset.get('qty', 0))
         
         if price_div_cd == 'AUTO':
             # 가격조회
+            loop = asyncio.get_running_loop()
             if my_asset.get('asset_id') in ['1', '2']:
-                price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
+                price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
+                #price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '3':
-                price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)  
+                price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
+                #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)  
 
         if my_asset.get('exchange_rate_yn', 'N') == 'Y':
             price *= usd_krw_rate
 
         sum_price = int(price * qty)
         my_asset['sum_price'] = sum_price
+        return my_asset
 
+    async def main(my_asset_list):
+        tasks = [asyncio.create_task(get_price_async(my_asset)) for my_asset in my_asset_list]
+        my_asset_list = await asyncio.gather(*tasks)
+
+    asyncio.run(main(my_asset_list))
+
+    for my_asset in my_asset_list:
+        sum_price = my_asset['sum_price']
+        
         if my_asset.get('asset_id') == '6':
             sum_price *= -1
         tot_sum_price += sum_price
