@@ -17,5 +17,6 @@ from	(
 		) a
 left outer join coin c
 on		a.ticker = upper(c.symbol)
+and		a.asset_id = '3'
 where	1=1
 ;
