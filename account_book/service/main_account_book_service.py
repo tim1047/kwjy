@@ -289,11 +289,13 @@ def insert_my_asset_accum(param):
     for my_asset in my_asset_list:
         price = float(my_asset.get('price', 0))
         if my_asset['price_div_cd'] == 'AUTO':
-            if my_asset['asset_id'] == '1':
-                price = asset_service.get_stock_price(my_asset['ticker'], proc_dt)
-            elif my_asset['asset_id'] == '3':
-                price = asset_service.get_crypto_price(my_asset['coin_id'], None)
-            
+            if my_asset.get('asset_id') == '1':
+                price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
+            elif my_asset.get('asset_id') == '2':
+                price = asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo')
+            elif my_asset.get('asset_id') == '3':
+                price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
+
         if my_asset['exchange_rate_yn'] == 'Y':
             price *= exchange_rate
 
