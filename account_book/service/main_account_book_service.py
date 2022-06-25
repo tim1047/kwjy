@@ -149,15 +149,13 @@ def get_my_asset_list(param):
             # 가격조회
             loop = asyncio.get_running_loop()
             if my_asset.get('asset_id') == '1':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker') + '.KS', proc_dt, datasource='yahoo'))
+                price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
             elif my_asset.get('asset_id') == '2':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
                 #price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '3':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
-                #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)  
-            elif my_asset.get('asset_id') == '7':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker') + '.KQ', proc_dt, datasource='yahoo'))
+                #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
 
         if my_asset.get('exchange_rate_yn', 'N') == 'Y':
             price *= usd_krw_rate
