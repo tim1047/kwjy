@@ -3,4 +3,5 @@ select	p.payment_id
 from	payment	p
 where	1=1
 and		p.member_id = %(member_id)s
+order by p.payment_id
 ;
