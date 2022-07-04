@@ -16,10 +16,10 @@ def get_stock_price(ticker, dt):
     return float(df_stock['Close'][0])
 
 def get_pdr_stock_price(ticker, dt, datasource='yahoo'):
-    dt = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y%m%d'), '%Y-%m-%d')
-    df_stock = pdr.DataReader(ticker, datasource, start=dt)
-
-    if len(df_stock) == 0:
+    try:
+        dt = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y%m%d'), '%Y-%m-%d')
+        df_stock = pdr.DataReader(ticker, datasource, start=dt)
+    except KeyError as e:
         dt_date = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d')
         df_stock = pdr.DataReader(ticker, datasource, start=dt_date)
     return float(df_stock['Close'][-1])
