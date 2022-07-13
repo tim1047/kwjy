@@ -37,6 +37,10 @@ def get_my_asset_list(param):
     sql_file = 'account_book/sql/get_my_asset_list.sql'
     return select_list(sql_file, param)
 
+def get_delayed_my_asset_list(param):
+    sql_file = 'account_book/sql/get_delayed_my_asset_list.sql'
+    return select_list(sql_file, param)
+
 def get_asset_list():
     sql_file = 'account_book/sql/get_asset_list.sql'
     return select_list(sql_file, None)
