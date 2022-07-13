@@ -4,6 +4,7 @@ import datetime
 from datetime import timedelta
 from dateutil import relativedelta
 import asyncio
+from django.db import transaction 
 
 
 def get_main_list(param):
@@ -169,7 +170,7 @@ def get_my_asset_list(param):
 
 def get_realtime_my_asset_list_async(param):
     proc_dt = param.get('strt_dt')
-    
+
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
 
     async def get_price_async(my_asset):
@@ -293,6 +294,7 @@ def get_my_asset_accum(param):
         result_list.append(my_asset_accum_info)
     return result_list
 
+@transaction.atomic()
 def insert_my_asset_accum(param):
     proc_dt = param.get('procDt', '')
     
