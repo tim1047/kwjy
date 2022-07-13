@@ -358,7 +358,7 @@ class MyAssetList(APIView):
             param = {
                 'strt_dt': request_data.get('strtDt', ''),
                 'end_dt': request_data.get('endDt', ''),
-                'is_delayed': request_data.get('isDelayed', True)
+                'type': request_data.get('type', 'delayed')
             }
             result_data = main_account_book_service.get_my_asset_list(param)
         except Exception as e:

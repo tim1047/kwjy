@@ -140,7 +140,7 @@ def get_my_asset_list(param):
     param['usd_krw_rate'] = usd_krw_rate
 
     my_asset_list = []
-    if param.get('is_delayed', True):
+    if param.get('type', 'delayed') == 'delayed':
         my_asset_list = get_delayed_my_asset_list(param)
     else:
         my_asset_list = get_realtime_my_asset_list_async(param)
@@ -168,6 +168,8 @@ def get_my_asset_list(param):
     return result_info
 
 def get_realtime_my_asset_list_async(param):
+    proc_dt = param.get('strt_dt')
+    
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
 
     async def get_price_async(my_asset):
