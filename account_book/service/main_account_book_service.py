@@ -282,6 +282,13 @@ def get_my_asset_accum(param):
         total_sum_price = 0
         for my_asset_accum in my_asset_accum_list:
             total_sum_price += my_asset_accum.get('total_sum_price', 0)
+        
+        my_asset_accum_list.insert(0, {
+            'accum_dt': proc_dt,
+            'asset_id': '0',
+            'asset_nm': '총 자산',
+            'total_sum_price': int(total_sum_price)
+        })
 
         my_asset_accum_info = {}
         my_asset_accum_info['data'] = my_asset_accum_list
