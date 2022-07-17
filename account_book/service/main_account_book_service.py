@@ -284,7 +284,10 @@ def get_my_asset_accum(param):
         
         total_sum_price = 0
         for my_asset_accum in my_asset_accum_list:
-            total_sum_price += my_asset_accum.get('total_sum_price', 0)
+            sum_price = my_asset_accum.get('total_sum_price', 0)
+            if my_asset_accum.get('asset_id', '') == '6':
+                sum_price *= -1
+            total_sum_price += sum_price
         
         my_asset_accum_list.insert(0, {
             'accum_dt': proc_dt,
