@@ -196,6 +196,7 @@ def get_realtime_my_asset_list_async(param):
 
         sum_price = int(price * qty)
         my_asset['sum_price'] = sum_price
+        my_asset['price'] = price
         return my_asset
 
     async def main(my_asset_list):
@@ -209,7 +210,6 @@ def get_realtime_my_asset_list_async(param):
 
     for my_asset in my_asset_list:
         my_asset['accum_dt'] = proc_dt[0:6]
-        my_asset['price'] = my_asset['sum_price']
         main_account_book_dao.insert_my_asset_accum(my_asset)
 
     return my_asset_list
