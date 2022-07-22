@@ -168,6 +168,7 @@ def get_my_asset_list(param):
     result_info['usd_krw_rate'] = usd_krw_rate
     return result_info
 
+@transaction.atomic()
 def get_realtime_my_asset_list_async(param):
     proc_dt = param.get('strt_dt')
 
@@ -203,6 +204,7 @@ def get_realtime_my_asset_list_async(param):
 
     asyncio.run(main(my_asset_list))
 
+    param['procDt'] = proc_dt
     main_account_book_dao.delete_my_asset_accum(param)
 
     for my_asset in my_asset_list:
