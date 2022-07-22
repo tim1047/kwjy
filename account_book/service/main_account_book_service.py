@@ -202,6 +202,14 @@ def get_realtime_my_asset_list_async(param):
         my_asset_list = await asyncio.gather(*tasks)
 
     asyncio.run(main(my_asset_list))
+
+    main_account_book_dao.delete_my_asset_accum(param)
+
+    for my_asset in my_asset_list:
+        my_asset['accum_dt'] = proc_dt[0:6]
+        my_asset['price'] = my_asset['sum_price']
+        main_account_book_dao.insert_my_asset_accum(my_asset)
+
     return my_asset_list
 
 def get_delayed_my_asset_list(param):
