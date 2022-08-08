@@ -146,6 +146,8 @@ def get_my_asset_list(param):
     else:
         my_asset_list = get_realtime_my_asset_list_async(param)
 
+    my_asset_group_info = {}
+
     for my_asset in my_asset_list:
         sum_price = my_asset['sum_price']
         
@@ -162,7 +164,25 @@ def get_my_asset_list(param):
             }
         
         result_info['data'][asset_id]['asset_tot_sum_price'] += sum_price
-        result_info['data'][asset_id]['data'].append(my_asset)
+        
+        my_asset_group_id = my_asset.get('my_asset_group_id', '')
+        if my_asset_group_id == '0':
+            result_info['data'][asset_id]['data'].append(my_asset)
+        else:
+            if my_asset_group_info.get(my_asset_group_id, None) is None:
+                my_asset_group_info[my_asset_group_id] = {
+                    'my_asset_group_id': my_asset_group_id,
+                    'my_asset_group_nm': my_asset.get('my_asset_group_nm', ''),
+                    'asset_id': asset_id,
+                    'sum_price': sum_price,
+                    'qty': my_asset['qty'],
+                    'data': []
+                }
+            my_asset_group_info[my_asset_group_id]['data'].append(my_asset)
+
+    for key, value in my_asset_group_info.items():
+        asset_id = value.get('asset_id')
+        result_info['data'][asset_id]['data'].append(value)
     
     result_info['tot_sum_price'] = tot_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
