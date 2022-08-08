@@ -176,7 +176,7 @@ def get_my_asset_list(param):
                     'my_asset_nm': my_asset.get('my_asset_nm', ''),
                     'asset_id': asset_id,
                     'asset_nm': my_asset.get('asset_nm', ''),
-                    'sum_price': sum_price,
+                    'sum_price': 0,
                     'qty': my_asset['qty'],
                     'data': []
                 }
