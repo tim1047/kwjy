@@ -173,11 +173,13 @@ def get_my_asset_list(param):
                 my_asset_group_info[my_asset_group_id] = {
                     'my_asset_group_id': my_asset_group_id,
                     'my_asset_group_nm': my_asset.get('my_asset_group_nm', ''),
+                    'my_asset_nm': my_asset.get('my_asset_nm', ''),
                     'asset_id': asset_id,
                     'sum_price': sum_price,
                     'qty': my_asset['qty'],
                     'data': []
                 }
+            my_asset_group_info[my_asset_group_id]['sum_price'] += sum_price
             my_asset_group_info[my_asset_group_id]['data'].append(my_asset)
 
     for key, value in my_asset_group_info.items():
