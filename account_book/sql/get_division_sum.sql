@@ -22,7 +22,7 @@ from	(
 								) y
 						left outer join 
 								(
-									select	sum(case when a.point_price > 0 and a.division_id = '3' then 0 else a.price end)	   as sum_price
+									select	sum(case when a.point_price > 0 and a.division_id = '3' then a.price - a.point_price else a.price end)	   as sum_price
 										,	max(a.division_id) as division_id
 										,	a.category_id
 									from	account			a
