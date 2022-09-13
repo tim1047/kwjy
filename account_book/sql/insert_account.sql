@@ -9,7 +9,7 @@ insert into account (
   , price
   , remark
   , impulse_yn
-  , point_yn
+  , point_price
   , reg_dts
   ,	regpe_id
   , mod_dts
@@ -27,7 +27,7 @@ values
   , %(price)s
   , %(remark)s
   , %(impulse_yn)s
-  , %(point_yn)s
+  , %(point_price)s
   ,	now()
   , 'SKW'
   , now()

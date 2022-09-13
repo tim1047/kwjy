@@ -57,7 +57,7 @@ from	(
 										,	a.category_id
 										, 	a.week
 									from	(
-												select	case when a.point_yn = 'Y' and a.division_id = '3' then 0 else a.price end as price
+												select	case when a.point_price > 0 and a.division_id = '3' then 0 else a.price end as price
 													,	a.division_id
 													,	a.category_id
 													,	a.category_seq
