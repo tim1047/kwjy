@@ -139,6 +139,8 @@ def get_my_asset_list(param):
     tot_sum_price = 0
     usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
     param['usd_krw_rate'] = usd_krw_rate
+    jpy_krw_rate = asset_service.get_jpy_krw_rate(proc_dt)
+    param['jpy_krw_rate'] = jpy_krw_rate
 
     my_asset_list = []
     if param.get('type', 'delayed') == 'delayed':
@@ -218,9 +220,14 @@ def get_realtime_my_asset_list_async(param):
             elif my_asset.get('asset_id') == '3':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
                 #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
+            elif my_asset.get('asset_id') == '7':
+                price = await loop.run_in_executor(None, lambda: asset_service.get_japan_stock_price(my_asset.get('ticker')))
 
         if my_asset.get('exchange_rate_yn', 'N') == 'Y':
-            price *= param['usd_krw_rate']
+            if my_asset.get('asset_id') == '7':
+                price *= param['jpy_krw_rate']
+            else:
+                price *= param['usd_krw_rate']
 
         sum_price = int(price * qty)
         my_asset['sum_price'] = sum_price
@@ -348,7 +355,8 @@ def insert_my_asset_accum(param):
     
     main_account_book_dao.delete_my_asset_accum(param)
     
-    exchange_rate = asset_service.get_usd_krw_rate(proc_dt)
+    usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
+    jpy_krw_rate = asset_service.get_jpy_krw_rate(proc_dt)
 
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
     for my_asset in my_asset_list:
@@ -360,9 +368,14 @@ def insert_my_asset_accum(param):
                 price = asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo')
             elif my_asset.get('asset_id') == '3':
                 price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
+            elif my_asset.get('asset_id') == '7':
+                price = asset_service.get_japan_stock_price(my_asset.get('ticker'))
 
         if my_asset['exchange_rate_yn'] == 'Y':
-            price *= exchange_rate
+            if my_asset.get('asset_id') == '7':
+                price *= usd_krw_rate
+            else:
+                price *= jpy_krw_rate
 
         my_asset['accum_dt'] = proc_dt[0:6]
         my_asset['price'] = price
