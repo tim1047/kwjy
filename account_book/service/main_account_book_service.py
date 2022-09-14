@@ -373,9 +373,9 @@ def insert_my_asset_accum(param):
 
         if my_asset['exchange_rate_yn'] == 'Y':
             if my_asset.get('asset_id') == '7':
-                price *= usd_krw_rate
-            else:
                 price *= jpy_krw_rate
+            else:
+                price *= usd_krw_rate
 
         my_asset['accum_dt'] = proc_dt[0:6]
         my_asset['price'] = price
