@@ -49,4 +49,4 @@ def get_jpy_krw_rate(dt):
     if len(df_jpy) == 0:
         dt_date = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d')
         df_jpy = yf.download(['JPYKRW=X'], start=dt_date)
-    return int(df_jpy['Close'][-1])
+    return float(df_jpy['Close'][-1])
