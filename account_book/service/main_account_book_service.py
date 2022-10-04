@@ -191,6 +191,7 @@ def get_my_asset_list(param):
     
     result_info['tot_sum_price'] = tot_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
+    result_info['jpy_krw_rate'] = jpy_krw_rate 
 
     for key, val in result_info.get('data').items():
         ordered_list = sorted(val.get('data'), key=lambda d: d['sum_price'], reverse=True)
