@@ -192,7 +192,7 @@ def get_my_asset_list(param):
         result_info['data'][asset_id]['data'].append(value)
     
     result_info['tot_sum_price'] = tot_sum_price
-    result_info['tot_new_worth_sum_price'] = tot_net_worth_sum_price
+    result_info['tot_net_worth_sum_price'] = tot_net_worth_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
     result_info['jpy_krw_rate'] = jpy_krw_rate 
 
