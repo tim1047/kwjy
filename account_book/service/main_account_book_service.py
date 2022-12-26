@@ -216,8 +216,8 @@ def get_realtime_my_asset_list_async(param):
             if my_asset.get('asset_id') == '1':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
             elif my_asset.get('asset_id') == '2':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
-                #price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
+                #price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
+                price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
             elif my_asset.get('asset_id') == '3':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
                 #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
@@ -366,7 +366,8 @@ def insert_my_asset_accum(param):
             if my_asset.get('asset_id') == '1':
                 price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '2':
-                price = asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo')
+                #price = asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo')
+                price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '3':
                 price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
             elif my_asset.get('asset_id') == '7':

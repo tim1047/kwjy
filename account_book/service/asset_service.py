@@ -8,6 +8,9 @@ import investpy
 cg = CoinGeckoAPI()
 
 def get_stock_price(ticker, dt):
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
+
     df_stock = fdr.DataReader(ticker, dt, dt)
     
     if len(df_stock) == 0:
