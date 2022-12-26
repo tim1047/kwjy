@@ -136,7 +136,7 @@ def get_my_asset_list(param):
         'data': {}
     }
     proc_dt = param.get('strt_dt')
-    tot_sum_price = 0
+    tot_sum_price, tot_net_worth_sum_price = 0, 0
     usd_krw_rate = asset_service.get_usd_krw_rate(proc_dt)
     param['usd_krw_rate'] = usd_krw_rate
     jpy_krw_rate = asset_service.get_jpy_krw_rate(proc_dt)
@@ -154,8 +154,10 @@ def get_my_asset_list(param):
         sum_price = my_asset['sum_price']
         
         if my_asset.get('asset_id') == '6':
-            sum_price *= -1
-        tot_sum_price += sum_price
+            tot_net_worth_sum_price -= sum_price
+        else:
+            tot_sum_price += sum_price
+            tot_net_worth_sum_price += sum_price
         
         asset_id = my_asset.get('asset_id')
         if result_info.get('data').get(asset_id, None) is None:
@@ -190,6 +192,7 @@ def get_my_asset_list(param):
         result_info['data'][asset_id]['data'].append(value)
     
     result_info['tot_sum_price'] = tot_sum_price
+    result_info['tot_new_worth_sum_price'] = tot_net_worth_sum_price
     result_info['usd_krw_rate'] = usd_krw_rate
     result_info['jpy_krw_rate'] = jpy_krw_rate 
 
