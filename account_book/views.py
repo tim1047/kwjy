@@ -347,32 +347,6 @@ class ExpenseSumDaily(APIView):
     def post(self, request):
         return Response({'result_message': 'SUCCESS'})
 
-class MyAssetList(APIView):
-    def get(self, request):
-        result_message = 'SUCCESS'
-        result_data = dict()
-        error_message = None
-
-        try:
-            request_data = request.GET
-            param = {
-                'strt_dt': request_data.get('strtDt', ''),
-                'end_dt': request_data.get('endDt', ''),
-                'type': request_data.get('type', 'delayed')
-            }
-            result_data = main_account_book_service.get_my_asset_list(param)
-        except Exception as e:
-            result_message = 'FAIL'
-            result_data = {}
-            exc_info = sys.exc_info()
-            error_message = ''.join(traceback.format_exception(*exc_info))
-            print(''.join(traceback.format_exception(*exc_info)))
-        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
-
-    def post(self, request):
-        return Response({'result_message': 'SUCCESS'})
-
-
 class AssetList(APIView):
     def get(self, request):
         result_message = 'SUCCESS'
@@ -408,7 +382,25 @@ class MyAsset(APIView):
         return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
 
     def get(self, request):
-        return Response({'result_message': 'SUCCESS'})
+        result_message = 'SUCCESS'
+        result_data = dict()
+        error_message = None
+
+        try:
+            request_data = request.GET
+            param = {
+                'strt_dt': request_data.get('strtDt', ''),
+                'end_dt': request_data.get('endDt', ''),
+                'type': request_data.get('type', 'delayed')
+            }
+            result_data = main_account_book_service.get_my_asset_list(param)
+        except Exception as e:
+            result_message = 'FAIL'
+            result_data = {}
+            exc_info = sys.exc_info()
+            error_message = ''.join(traceback.format_exception(*exc_info))
+            print(''.join(traceback.format_exception(*exc_info)))
+        return Response({'result_message': result_message, 'result_data': result_data, 'error_message': error_message})
 
     def put(self, request):
         result_message = 'SUCCESS'
