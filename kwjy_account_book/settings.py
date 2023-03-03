@@ -139,5 +139,5 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 CRONJOBS = [
-    ('* */4 * * *', 'account_book.cron.asset_accum'),
+    ('* 0,6,12,18 * * *', 'account_book.cron.asset_accum'),
 ]
