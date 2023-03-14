@@ -12,6 +12,7 @@ from	(
 				, 	a.asset_nm
 				, 	ma.exchange_rate_yn
 				,	ma.my_asset_group_id
+				,	now()					as my_asset_accum_dts
 			from	my_asset	ma
 				,	asset		a
 			where	1=1
