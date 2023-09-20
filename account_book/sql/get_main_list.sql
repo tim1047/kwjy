@@ -9,6 +9,7 @@ from	(
 				,	z.member_nm
 				,	z.payment_id
 				,	z.payment_nm
+				,	z.payment_type
 				,	z.category_id
 				,	z.category_nm
 				,	z.category_seq
@@ -26,6 +27,7 @@ from	(
 							,	am.member_nm
 							,	a.payment_id
 							,	p.payment_nm
+							,	p.payment_type
 							,	c.category_nm
 							,	a.price
 							,	a.remark
