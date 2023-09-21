@@ -219,7 +219,7 @@ def get_realtime_my_asset_list_async(param):
         if price_div_cd == 'AUTO':
             # 가격조회
             loop = asyncio.get_running_loop()
-            if my_asset.get('asset_id') == '1' and my_asset.get('asset_id') == '8':
+            if my_asset.get('asset_id') == '1' or my_asset.get('asset_id') == '8':
                 price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
             elif my_asset.get('asset_id') == '2':
                 #price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
@@ -369,7 +369,7 @@ def insert_my_asset_accum(param):
     for my_asset in my_asset_list:
         price = float(my_asset.get('price', 0))
         if my_asset['price_div_cd'] == 'AUTO':
-            if my_asset.get('asset_id') == '1' and my_asset.get('asset_id') == '8':
+            if my_asset.get('asset_id') == '1' or my_asset.get('asset_id') == '8':
                 price = asset_service.get_stock_price(my_asset.get('ticker'), proc_dt)
             elif my_asset.get('asset_id') == '2':
                 #price = asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo')
