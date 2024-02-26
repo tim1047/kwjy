@@ -17,6 +17,7 @@ from	(
 				,	asset		a
 			where	1=1
 			and		ma.asset_id = a.asset_id
+			and		(%(my_asset_id)s is null or ma.my_asset_id = %(my_asset_id)s)
 		) a
 left outer join coin c
 on		a.ticker = upper(c.symbol)

@@ -208,41 +208,12 @@ def get_my_asset_list(param):
 @transaction.atomic()
 def get_realtime_my_asset_list_async(param):
     proc_dt = param.get('strt_dt')
+    param['my_asset_id'] = None
 
     my_asset_list = main_account_book_dao.get_my_asset_list(param)
 
-    async def get_price_async(my_asset):
-        price_div_cd = my_asset.get('price_div_cd')
-        price = float(my_asset.get('price', 0))
-        qty = float(my_asset.get('qty', 0))
-        
-        if price_div_cd == 'AUTO':
-            # 가격조회
-            loop = asyncio.get_running_loop()
-            if my_asset.get('asset_id') == '1' or my_asset.get('asset_id') == '8':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
-            elif my_asset.get('asset_id') == '2':
-                #price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
-                price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
-            elif my_asset.get('asset_id') == '3':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
-                #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
-            elif my_asset.get('asset_id') == '7':
-                price = await loop.run_in_executor(None, lambda: asset_service.get_japan_stock_price(my_asset.get('ticker')))
-
-        if my_asset.get('exchange_rate_yn', 'N') == 'Y':
-            if my_asset.get('asset_id') == '7':
-                price *= param['jpy_krw_rate']
-            else:
-                price *= param['usd_krw_rate']
-
-        sum_price = int(price * qty)
-        my_asset['sum_price'] = sum_price
-        my_asset['price'] = price
-        return my_asset
-
     async def main(my_asset_list):
-        tasks = [asyncio.create_task(get_price_async(my_asset)) for my_asset in my_asset_list]
+        tasks = [asyncio.create_task(get_price_async(my_asset, proc_dt)) for my_asset in my_asset_list]
         my_asset_list = await asyncio.gather(*tasks)
 
     asyncio.run(main(my_asset_list))
@@ -252,6 +223,14 @@ def get_realtime_my_asset_list_async(param):
 
     for my_asset in my_asset_list:
         my_asset['accum_dt'] = proc_dt[0:6]
+        if my_asset.get('exchange_rate_yn', 'N') == 'Y':
+            if my_asset.get('asset_id') == '7':
+                my_asset['sum_price'] *= param['jpy_krw_rate']
+                my_asset['price'] *= param['jpy_krw_rate']
+            else:
+                my_asset['sum_price'] *= param['usd_krw_rate']
+                my_asset['price'] *= param['usd_krw_rate']
+
         main_account_book_dao.insert_my_asset_accum(my_asset)
 
     return my_asset_list
@@ -267,7 +246,22 @@ def insert_my_asset(param):
     return main_account_book_dao.insert_my_asset(param)
 
 def update_my_asset(param):
-    return main_account_book_dao.update_my_asset(param)
+    main_account_book_dao.update_my_asset(param)
+    
+    proc_dt = datetime.datetime.strftime(datetime.datetime.now(), '%Y%m%d')
+    my_asset_list = main_account_book_dao.get_my_asset_list(param)
+
+    async def main(my_asset_list):
+        tasks = [asyncio.create_task(get_price_async(my_asset, proc_dt)) for my_asset in my_asset_list]
+        my_asset_list = await asyncio.gather(*tasks)
+
+    asyncio.run(main(my_asset_list))      
+
+    param['procDt'] = proc_dt
+
+    for my_asset in my_asset_list:
+        my_asset['accum_dt'] = proc_dt[0:6]
+        main_account_book_dao.insert_my_asset_accum(my_asset)
 
 def delete_my_asset(param):
     return main_account_book_dao.delete_my_asset(param)
@@ -390,3 +384,27 @@ def insert_my_asset_accum(param):
         my_asset['accum_dt'] = proc_dt[0:6]
         my_asset['price'] = price
         main_account_book_dao.insert_my_asset_accum(my_asset)
+
+async def get_price_async(my_asset, proc_dt):
+    price_div_cd = my_asset.get('price_div_cd')
+    price = float(my_asset.get('price', 0))
+    qty = float(my_asset.get('qty', 0))
+    
+    if price_div_cd == 'AUTO':
+        # 가격조회
+        loop = asyncio.get_running_loop()
+        if my_asset.get('asset_id') == '1' or my_asset.get('asset_id') == '8':
+            price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
+        elif my_asset.get('asset_id') == '2':
+            #price = await loop.run_in_executor(None, lambda: asset_service.get_pdr_stock_price(my_asset.get('ticker'), proc_dt, datasource='yahoo'))
+            price = await loop.run_in_executor(None, lambda: asset_service.get_stock_price(my_asset.get('ticker'), proc_dt))
+        elif my_asset.get('asset_id') == '3':
+            price = await loop.run_in_executor(None, lambda: asset_service.get_crypto_price(my_asset.get('coin_id'), None))
+            #price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
+        elif my_asset.get('asset_id') == '7':
+            price = await loop.run_in_executor(None, lambda: asset_service.get_japan_stock_price(my_asset.get('ticker')))
+
+    sum_price = int(price * qty)
+    my_asset['sum_price'] = sum_price
+    my_asset['price'] = price
+    return my_asset
