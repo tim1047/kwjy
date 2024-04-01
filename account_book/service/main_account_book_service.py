@@ -355,6 +355,7 @@ def get_my_asset_accum(param):
 @transaction.atomic()
 def insert_my_asset_accum(param):
     proc_dt = param.get('procDt', '')
+    param['my_asset_id'] = None
     
     main_account_book_dao.delete_my_asset_accum(param)
     
