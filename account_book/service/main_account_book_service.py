@@ -239,6 +239,8 @@ def get_realtime_my_asset_list_async(param):
             else:
                 my_asset['sum_price'] *= param['usd_krw_rate']
                 my_asset['price'] *= param['usd_krw_rate']
+        my_asset['sum_price'] = int(my_asset['sum_price'])
+        my_asset['price'] = int(my_asset['price'])
 
         main_account_book_dao.insert_my_asset_accum(my_asset)
 
