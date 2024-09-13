@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'account_book',
         'USER': 'kwjy',
         'PASSWORD': 'kwjy',
-        'HOST': '146.56.159.174',
+        'HOST': '34.19.118.233',
         'PORT': '5432',
     }
 }
