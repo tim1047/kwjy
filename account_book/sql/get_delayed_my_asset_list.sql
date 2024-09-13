@@ -13,7 +13,8 @@ from	(
 				,	ma.exchange_rate_yn
 				,	cast(maa.price * maa.qty as integer) as sum_price
 				,	ma.my_asset_group_id
-				,   maa.mod_dts							as my_asset_accum_dts
+				,	ma.cashable_yn
+				,   max(maa.mod_dts) over()				 as my_asset_accum_dts
 			from	my_asset		ma
 				,	my_asset_accum 	maa
 				,	asset			a

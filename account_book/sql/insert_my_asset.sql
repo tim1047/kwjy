@@ -8,6 +8,7 @@ insert into my_asset
   ,	price
   ,	qty
   ,	exchange_rate_yn
+  , cashable_yn
   , reg_dts
   ,	regpe_id
   ,	mod_dts
@@ -23,6 +24,7 @@ values
   , %(price)s
   , %(qty)s
   , %(exchange_rate_yn)s
+  , %(cashable_yn)s
   , now()
   , 'SKW'
   , now()

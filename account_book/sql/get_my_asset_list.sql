@@ -12,11 +12,13 @@ from	(
 				, 	a.asset_nm
 				, 	ma.exchange_rate_yn
 				,	ma.my_asset_group_id
+				,   ma.cashable_yn
 				,	now()					as my_asset_accum_dts
 			from	my_asset	ma
 				,	asset		a
 			where	1=1
 			and		ma.asset_id = a.asset_id
+			and		(%(my_asset_id)s is null or ma.my_asset_id = %(my_asset_id)s)
 		) a
 left outer join coin c
 on		a.ticker = upper(c.symbol)

@@ -6,6 +6,7 @@ set     my_asset_nm     	= coalesce(nullif(%(my_asset_nm)s, ''), my_asset_nm)
     ,   price           	= coalesce(nullif(%(price)s, 0.0), price)
     ,   qty          		= coalesce(nullif(%(qty)s, 0.0), qty)
     ,   exchange_rate_yn 	= coalesce(nullif(%(exchange_rate_yn)s, ''), exchange_rate_yn)
+    ,   cashable_yn 	    = coalesce(nullif(%(cashable_yn)s, ''), cashable_yn)
     ,   mod_dts         	= now()
 where   1=1
 and     my_asset_id = %(my_asset_id)s
