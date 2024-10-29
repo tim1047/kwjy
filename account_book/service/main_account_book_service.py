@@ -14,7 +14,41 @@ def get_main_list(param):
 
 
 def get_category_sum(param):
-    return main_account_book_dao.get_category_sum(param)
+    category_sum_list = main_account_book_dao.get_category_sum(param)
+    category_sum_dict = {}
+    total_sum_price = 0
+
+    for category_sum in category_sum_list:
+        category_id = category_sum.get("category_id", "")
+
+        if category_id:
+            total_sum_price += category_sum.get("sum_price", 0)
+
+            if category_id not in category_sum_dict:
+                category_sum_dict[category_id] = {
+                    "category_id": category_id,
+                    "category_nm": category_sum.get("category_nm", ""),
+                    "division_id": category_sum.get("division_id", ""),
+                    "sum_price": category_sum.get("sum_price", 0),
+                    "data": [
+                        {
+                            "category_seq": category_sum.get("category_seq", ""),
+                            "category_seq_nm": category_sum.get("category_seq_nm", ""),
+                            "sum_price": category_sum.get("sum_price", 0),
+                        }
+                    ],
+                }
+            else:
+                category_sum_dict[category_id]["sum_price"] += category_sum.get("sum_price", 0)
+                category_sum_dict[category_id]["data"].append(
+                    {
+                        "category_seq": category_sum.get("category_seq", ""),
+                        "category_seq_nm": category_sum.get("category_seq_nm", ""),
+                        "sum_price": category_sum.get("sum_price", 0),
+                    }
+                )
+            category_sum_dict[category_id]["total_sum_price"] = total_sum_price
+    return list(category_sum_dict.values())
 
 
 def get_category_seq_sum(param):
