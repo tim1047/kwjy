@@ -54,7 +54,7 @@ def get_usd_krw_rate(dt):
             datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d'
         )
         df_usd = yf.download(['USDKRW=X'], start=dt_date)
-    return int(df_usd['Close'][-1])
+    return int(df_usd['Close'].iloc[-1].item())
 
 
 def get_jpy_krw_rate(dt):
@@ -66,4 +66,4 @@ def get_jpy_krw_rate(dt):
             datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d'
         )
         df_jpy = yf.download(['JPYKRW=X'], start=dt_date)
-    return float(df_jpy['Close'][-1])
+    return float(df_jpy['Close'].iloc[-1].item())
