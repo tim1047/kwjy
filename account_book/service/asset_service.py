@@ -16,6 +16,8 @@ def get_stock_price(ticker, dt):
 
     try:
         df_stock = fdr.DataReader(ticker, dt, dt)
+        if len(df_stock) == 0:
+            raise Exception
     except Exception as e:
         dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
         dt = dt_date - datetime.timedelta(days=7)
