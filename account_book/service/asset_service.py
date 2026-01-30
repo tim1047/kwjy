@@ -16,13 +16,13 @@ def get_stock_price(ticker, dt):
 
     try:
         df_stock = fdr.DataReader(ticker, dt, dt)
-        if len(df_stock) == 0:
+        if len(df_stock) == 0 or df_stock.isna:
             raise Exception
     except Exception as e:
         dt_date = datetime.datetime.strptime(dt, '%Y%m%d')
         dt = dt_date - datetime.timedelta(days=7)
         df_stock = fdr.DataReader(ticker, dt).tail(1)
-    return float(df_stock['Close'][0])
+    return float(df_stock['Close'].iloc[-1].item())
 
 
 def get_pdr_stock_price(ticker, dt, datasource='yahoo'):
@@ -37,9 +37,8 @@ def get_pdr_stock_price(ticker, dt, datasource='yahoo'):
     return float(df_stock['Close'][-1])
 
 
-def get_japan_stock_price(ticker):
-    df_stock = investpy.get_stock_recent_data(stock=ticker, country='japan', order='descending')
-    return float(df_stock.iloc[0]['Close'])
+def get_japan_stock_price(ticker, dt):
+    return get_stock_price(f"{ticker}.T", dt)
 
 
 def get_crypto_price(coin_id, dt):
@@ -51,7 +50,7 @@ def get_usd_krw_rate(dt):
     dt = datetime.datetime.strftime(datetime.datetime.strptime(dt, '%Y%m%d'), '%Y-%m-%d')
     # df_usd = yf.download(['USDKRW=X'], start=dt)
     df_usd = fdr.DataReader('USD/KRW', dt, dt)
-    
+
     if len(df_usd) == 0 or df_usd['Close'].isna:
         dt_date = datetime.datetime.strftime(
             datetime.datetime.strptime(dt, '%Y-%m-%d') - datetime.timedelta(days=7), '%Y-%m-%d'

@@ -424,7 +424,7 @@ def insert_my_asset_accum(param):
             elif my_asset.get('asset_id') == '3':
                 price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
             elif my_asset.get('asset_id') == '7':
-                price = asset_service.get_japan_stock_price(my_asset.get('ticker'))
+                price = asset_service.get_japan_stock_price(my_asset.get('ticker'), proc_dt)
 
         if my_asset['exchange_rate_yn'] == 'Y':
             if my_asset.get('asset_id') == '7':
@@ -461,7 +461,7 @@ async def get_price_async(my_asset, proc_dt):
             # price = asset_service.get_crypto_price(my_asset.get('coin_id'), None)
         elif my_asset.get('asset_id') == '7':
             price = await loop.run_in_executor(
-                None, lambda: asset_service.get_japan_stock_price(my_asset.get('ticker'))
+                None, lambda: asset_service.get_japan_stock_price(my_asset.get('ticker'), proc_dt)
             )
 
     sum_price = int(price * qty)
